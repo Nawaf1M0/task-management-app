@@ -25,3 +25,11 @@ To be decided during development.
 ## Project Status
 
 Early development — learning GitHub fundamentals.
+
+## Development Workflow
+
+This project uses Git for version control and GitHub for
+collaboration, issue tracking, and automated workflows.
+
+Changes are developed locally, committed with descriptive
+messages, and pushed to GitHub.
