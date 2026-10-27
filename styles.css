@@ -1,0 +1,69 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f3f5f9;
+  color: #172033;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  max-width: 760px;
+  margin: 48px auto;
+  padding: 0 20px;
+}
+
+.panel {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: 0 3px 12px #0000000d;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input, textarea, select {
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font: inherit;
+}
+
+button {
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+#task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task {
+  padding: 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.task p {
+  white-space: pre-wrap;
+}
+
+#message {
+  color: #15803d;
+}
