@@ -22,13 +22,18 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-  const task = {
-    id: crypto.randomUUID(),
+  let task;
+
+try {
+  task = window.TaskUtils.createTask({
     title,
     description,
-    priority,
-    status: "Todo"
-  };
+    priority
+  });
+} catch (error) {
+  message.textContent = error.message;
+  return;
+}
 
   tasks.push(task);
   renderTasks();
