@@ -49,3 +49,7 @@ test("rejects invalid priorities", () => {
     });
   }, /Invalid task priority/);
 });
+
+test("CI demonstration: intentionally failing test", () => {
+  assert.equal(1 + 1, 3);
+});
