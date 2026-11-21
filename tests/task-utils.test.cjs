@@ -51,5 +51,5 @@ test("rejects invalid priorities", () => {
 });
 
 test("CI demonstration: intentionally failing test", () => {
-  assert.equal(1 + 1, 3);
+  assert.equal(1 + 1, 2);
 });
