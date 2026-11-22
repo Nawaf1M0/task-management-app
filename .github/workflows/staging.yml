@@ -1,0 +1,22 @@
+name: Staging Environment Demo
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  staging-demo:
+    name: Inspect Staging Environment
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Display environment configuration
+        env:
+          APP_ENVIRONMENT: ${{ vars.APP_ENVIRONMENT }}
+        run: |
+          echo "Environment: $APP_ENVIRONMENT"
+          echo "GitHub ref: $GITHUB_REF"
+          echo "Commit: $GITHUB_SHA"
