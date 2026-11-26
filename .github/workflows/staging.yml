@@ -1,3 +1,4 @@
+
 name: Staging Environment Demo
 
 on:
@@ -20,3 +21,14 @@ jobs:
           echo "Environment: $APP_ENVIRONMENT"
           echo "GitHub ref: $GITHUB_REF"
           echo "Commit: $GITHUB_SHA"
+
+      - name: Verify deployment secret exists
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEMO_DEPLOY_TOKEN }}
+        run: |
+          if [ -z "$DEPLOY_TOKEN" ]; then
+            echo "Deployment token is missing"
+            exit 1
+          fi
+
+          echo "Deployment token is configured"
