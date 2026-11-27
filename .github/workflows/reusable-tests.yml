@@ -11,7 +11,7 @@ on:
         default: ubuntu-latest
 
       node-version:
-        description: Node.js version
+        description: Node.js version to install
         required: false
         type: string
         default: '24'
@@ -23,6 +23,7 @@ jobs:
   test:
     name: Execute JavaScript Tests
     runs-on: ${{ inputs.operating-system }}
+    timeout-minutes: 10
 
     steps:
       - name: Checkout repository
