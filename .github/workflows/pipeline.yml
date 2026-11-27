@@ -1,0 +1,86 @@
+
+name: Application Build Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Pipeline Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Run tests
+        run: node --test
+
+  build:
+    name: Build Application
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare application files
+        run: |
+          mkdir -p dist
+          cp index.html styles.css app.js task-utils.js dist/
+
+      - name: Verify build output
+        run: |
+          test -f dist/index.html
+          test -f dist/styles.css
+          test -f dist/app.js
+          test -f dist/task-utils.js
+          ls -la dist/
+
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-build
+          path: dist/
+          retention-days: 14
+          if-no-files-found: error
+
+  package:
+    name: Package Application
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build output
+        uses: actions/download-artifact@v4
+        with:
+          name: application-build
+          path: dist/
+
+      - name: Create application archive
+        run: |
+          cd dist
+          zip -r ../task-management-app.zip .
+
+      - name: Upload application package
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-package
+          path: task-management-app.zip
+          retention-days: 14
+          if-no-files-found: error
