@@ -1,0 +1,37 @@
+
+name: Reusable JavaScript Tests
+
+on:
+  workflow_call:
+    inputs:
+      operating-system:
+        description: Operating system for the runner
+        required: false
+        type: string
+        default: ubuntu-latest
+
+      node-version:
+        description: Node.js version
+        required: false
+        type: string
+        default: '24'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Execute JavaScript Tests
+    runs-on: ${{ inputs.operating-system }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare JavaScript environment
+        uses: ./.github/actions/setup-javascript
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Run automated tests
+        run: node --test
