@@ -13,12 +13,17 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   compatibility:
     name: Compatibility (${{ matrix.os }}, Node ${{ matrix.node-version }})
 
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         os:
           - ubuntu-latest
