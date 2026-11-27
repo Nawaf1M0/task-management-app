@@ -16,7 +16,6 @@ permissions:
 jobs:
   compatibility:
     name: Compatibility (${{ matrix.os }}, Node ${{ matrix.node-version }})
-    runs-on: ${{ matrix.os }}
 
     strategy:
       fail-fast: false
@@ -28,19 +27,8 @@ jobs:
           - '22'
           - '24'
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    uses: ./.github/workflows/reusable-tests.yml
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Check JavaScript syntax
-        run: |
-          node --check app.js
-          node --check task-utils.js
-
-      - name: Run automated tests
-        run: node --test
+    with:
+      operating-system: ${{ matrix.os }}
+      node-version: ${{ matrix.node-version }}

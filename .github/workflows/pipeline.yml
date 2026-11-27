@@ -14,21 +14,12 @@ permissions:
   contents: read
 
 jobs:
-  test:
+    test:
     name: Pipeline Tests
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '24'
-
-      - name: Run tests
-        run: node --test
+    uses: ./.github/workflows/reusable-tests.yml
+    with:
+      operating-system: ubuntu-latest
+      node-version: '24'
 
   build:
     name: Build Application
