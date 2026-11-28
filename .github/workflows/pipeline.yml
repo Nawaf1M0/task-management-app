@@ -47,6 +47,9 @@ jobs:
           test -f dist/app.js
           test -f dist/task-utils.js
           ls -la dist/
+      
+      - name: Intentional quality gate failure
+        run: exit 1
 
       - name: Upload build output
         uses: actions/upload-artifact@v4
