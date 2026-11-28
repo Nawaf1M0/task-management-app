@@ -37,3 +37,24 @@ jobs:
     with:
       operating-system: ${{ matrix.os }}
       node-version: ${{ matrix.node-version }}
+
+  quality-gate:
+    name: Compatibility Quality Gate
+    needs: compatibility
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Validate compatibility results
+        env:
+          COMPATIBILITY_RESULT: ${{ needs.compatibility.result }}
+        run: |
+          echo "Compatibility result: $COMPATIBILITY_RESULT"
+
+          if [ "$COMPATIBILITY_RESULT" != "success" ]; then
+            echo "Compatibility quality gate failed"
+            exit 1
+          fi
+
+          echo "Compatibility quality gate passed"

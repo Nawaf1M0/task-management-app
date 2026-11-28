@@ -81,3 +81,29 @@ jobs:
           path: task-management-app.zip
           retention-days: 14
           if-no-files-found: error
+  quality-gate:
+    name: Pipeline Quality Gate
+    needs: [test, build, package]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Validate pipeline results
+        env:
+          TEST_RESULT: ${{ needs.test.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          PACKAGE_RESULT: ${{ needs.package.result }}
+        run: |
+          echo "Test result: $TEST_RESULT"
+          echo "Build result: $BUILD_RESULT"
+          echo "Package result: $PACKAGE_RESULT"
+
+          if [ "$TEST_RESULT" != "success" ] ||
+             [ "$BUILD_RESULT" != "success" ] ||
+             [ "$PACKAGE_RESULT" != "success" ]; then
+            echo "Pipeline quality gate failed"
+            exit 1
+          fi
+
+          echo "Pipeline quality gate passed"
