@@ -8,6 +8,20 @@ and this project follows Semantic Versioning.
 
 ## [Unreleased]
 
+
+## [0.2.1] - 2026-11-28
+
+### Fixed
+
+- Corrected application filenames in the release packaging workflow.
+- Resolved missing CSS and JavaScript files in the distributed application.
+
+### Added
+
+- Mandatory validation of required application files before packaging.
+- Automated ZIP archive integrity and completeness verification.
+
+
 ## [0.2.0] - 2026-11-28
 
 ### Added

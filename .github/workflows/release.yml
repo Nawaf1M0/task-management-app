@@ -71,17 +71,59 @@ jobs:
       - name: Run automated tests
         run: node --test
 
+
       - name: Create release package
         env:
           VERSION: ${{ needs.validate.outputs.version }}
         run: |
           mkdir -p release
 
-          zip "release/task-management-app-${VERSION}.zip" \
-            index.html \
-            style.css \
-            script.js \
+          FILES=(
+            index.html
+            styles.css
+            app.js
             task-utils.js
+          )
+
+          for file in "${FILES[@]}"; do
+            if [[ ! -f "$file" ]]; then
+              echo "::error::Required application file missing: $file"
+              exit 1
+            fi
+
+            echo "Verified required file: $file"
+          done
+
+          zip "release/task-management-app-${VERSION}.zip" \
+            "${FILES[@]}"
+
+
+      - name: Validate release package contents
+        env:
+          VERSION: ${{ needs.validate.outputs.version }}
+        run: |
+          PACKAGE="release/task-management-app-${VERSION}.zip"
+
+          unzip -t "$PACKAGE"
+
+          EXPECTED_FILES=$(printf '%s\n' \
+            index.html \
+            styles.css \
+            app.js \
+            task-utils.js | sort)
+
+          ACTUAL_FILES=$(unzip -Z1 "$PACKAGE" | sort)
+
+          if [[ "$ACTUAL_FILES" != "$EXPECTED_FILES" ]]; then
+            echo "::error::Release package contents are incorrect."
+            echo "Expected files:"
+            echo "$EXPECTED_FILES"
+            echo "Actual files:"
+            echo "$ACTUAL_FILES"
+            exit 1
+          fi
+
+          echo "Release package completeness verification PASSED"
 
       - name: Generate and verify SHA-256 checksum
         env:
